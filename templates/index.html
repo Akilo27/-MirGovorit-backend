@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Recipe App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+    }
+
+    h1 {
+        color: #333;
+        font-size: 24px;
+    }
+
+    h2 {
+        color: #666;
+        font-size: 20px;
+        margin-top: 20px;
+    }
+
+    form {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: inline-block;
+        width: 100px;
+        margin-right: 10px;
+    }
+
+    input[type="text"] {
+        width: 200px;
+    }
+
+    input[type="submit"] {
+        padding: 5px 10px;
+        background-color: #333;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+    }
+
+    #result {
+        margin-top: 20px;
+        color: #666;
+    }
+
+</style>
+
+
+
+   <h1>Recipe App</h1>
+
+<h2>Add Product to Recipe</h2>
+<form id="addProductForm">
+    <label for="recipe_id">Recipe ID:</label>
+    <input type="text" id="recipe_id" required><br>
+    <label for="product_id">Product ID:</label>
+    <input type="text" id="product_id" required><br>
+    <label for="weight">Weight:</label>
+    <input type="text" id="weight" required><br>
+    <input type="submit" value="Add Product to Recipe">
+</form>
+
+<h2>Cook Recipe</h2>
+<form id="cookRecipeForm">
+    <label for="cook_recipe_id">Recipe ID:</label>
+    <input type="text" id="cook_recipe_id" required><br>
+    <input type="submit" value="Cook Recipe">
+</form>
+
+<h2>Show Recipes Without Product</h2>
+<form id="showRecipesForm">
+    <label for="show_product_id">Product ID:</label>
+    <input type="text" id="show_product_id" required><br>
+    <input type="submit" value="Show Recipes Without Product">
+</form>
+
+<div id="result"></div>
+
+<script>
+    document.getElementById("addProductForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        var recipeId = document.getElementById("recipe_id").value;
+        var productId = document.getElementById("product_id").value;
+        var weight = document.getElementById("weight").value;
+        var url = "/add_product_to_recipe?recipe_id=" + recipeId + "&product_id=" + productId + "&weight=" + weight;
+
+        fetch(url)
+            .then(function(response) {
+                return response.text();
+            })
+            .then(function(data) {
+                document.getElementById("result").innerHTML = data;
+            });
+    });
+
+    document.getElementById("cookRecipeForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        var recipeId = document.getElementById("cook_recipe_id").value;
+        var url = "/cook_recipe?recipe_id=" + recipeId;
+
+        fetch(url)
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                document.getElementById("result").innerHTML = JSON.stringify(data);
+            });
+    });
+
+    document.getElementById("showRecipesForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        var productId = document.getElementById("show_product_id").value;
+        var url = "/show_recipes_without_product?product_id=" + productId;
+
+        fetch(url)
+            .then(function(response) {
+                return response.text();
+            })
+            .then(function(data) {
+                document.getElementById("result").innerHTML = data;
+            });
+    });
+</script>
+
+
+
+
+
+
+</body>
+</html>
